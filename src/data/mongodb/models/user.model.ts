@@ -24,6 +24,10 @@ const userSchema = new Schema(
       type: Date,
       default: null, // Si es FREE, no tiene fecha de expiración
     },
+    refreshToken:{
+      type:String,
+      required: [true, "No rf "],
+    }
   },
   {
     timestamps: true,

@@ -5,6 +5,8 @@ import { RegisterUser } from "../../domain/use-cases/auth/register-user.use-case
 import { LoginUser } from "../../domain/use-cases/auth/login-user.use-case";
 import { LoginUserDto } from "../../domain/dtos/auth/login-user.dto";
 import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
+import { GetAccessTokenDto } from "../../domain/dtos/auth/get-accesToken.dto";
+import { GetAccessToken } from "../../domain/use-cases/auth/access-token.use-case";
 
 
 export class AuthController{
@@ -41,4 +43,12 @@ export class AuthController{
         
     }
 
+    getAccessToken=(req:Request,res:Response)=>{
+        const [error,getAccessTokenDto]=GetAccessTokenDto.create(req.cookies)
+        if ( error ) return res.status(400).json({ error });
+        new GetAccessToken(this.authRepository)
+        .execute(getAccessTokenDto!)
+        .then(data => res.json(data))
+        .catch( error => this.handlerError(error, res) );
+    }
 }

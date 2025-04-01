@@ -1,8 +1,24 @@
 import express, { Router } from 'express'
+import cors,{ CorsOptions } from 'cors' 
+import cookieParser from 'cookie-parser';
 
 interface Options{
     port?:number
     routes:Router
+}
+const whitelist =[process.env.URL_FRONTEND] 
+
+const corsOptions:CorsOptions={
+    origin:function(origin,callback){
+        if(origin!==undefined && whitelist.includes(origin)){
+            // puedede consultar la api
+            callback(null,true)
+        }else{
+            // no esta permitido
+            callback(new  Error("Error de Cors"))
+        }
+    }
+    
 }
 
 export class Server{
@@ -19,7 +35,9 @@ export class Server{
 
 
     async start(){
+        //this.app.use(cors(corsOptions))
         this.app.use(express.json())
+        this.app.use(cookieParser());
         this.app.use( express.urlencoded({ extended: true }) ); 
         
         this.app.use(this.routes)

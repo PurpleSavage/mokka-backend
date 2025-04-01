@@ -8,7 +8,8 @@ export class UserEntity{
         public password:string,
         public credits:number | null,
         public typePlan: TypePlan,
-        public subscriptionExpiresAt:Date | null
+        public subscriptionExpiresAt:Date | null,
+        public refresh_token:string
     ){}
 
 }

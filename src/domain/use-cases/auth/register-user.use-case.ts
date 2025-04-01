@@ -13,7 +13,8 @@ interface UserToken{
         email:string,
         credits:number | null,
         typePlan: TypePlan,
-        subscriptionExpiresAt:Date | null
+        subscriptionExpiresAt:Date | null,
+        refreshToken:string
     }
 }
 
@@ -39,7 +40,8 @@ export class RegisterUser implements RegisterUserUseCase{
                 email:user.email,
                 credits: user.credits,
                 typePlan:user.typePlan,
-                subscriptionExpiresAt:user.subscriptionExpiresAt
+                subscriptionExpiresAt:user.subscriptionExpiresAt,
+                refreshToken: user.refresh_token 
             }
         }
     }
