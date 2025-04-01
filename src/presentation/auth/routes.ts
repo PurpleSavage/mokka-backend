@@ -12,6 +12,7 @@ export class AuthRoutes{
         const controller = new AuthController(authRepository)
         router.post('/register', controller.registerUser)
         router.post('/login', controller.loginUser )
+        router.get('/accessToken',controller.getAccessToken)
         return router
     }
 } 
