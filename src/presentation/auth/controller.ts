@@ -18,7 +18,6 @@ export class AuthController{
         if(error instanceof CustomError){
             return res.status(error.statusCode).json({error:error.message})
         }
-        console.log(error)
         res.status(500).json({error:'Internal Server error'})
     }
     registerUser=(req:Request,res:Response)=>{
