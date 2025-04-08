@@ -5,6 +5,6 @@ export class TextEntity{
         public id :string,
         public content:string,
         public userId: string,
-        public modelName:ModelName
+        public model:ModelName
     ){}
 }

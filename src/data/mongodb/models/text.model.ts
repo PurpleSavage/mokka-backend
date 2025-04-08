@@ -20,4 +20,4 @@ const textSchema = new Schema(
         }
     }
 )
-export const UserModel = mongoose.model("User", textSchema);
+export const TextModel = mongoose.model("TextProofreader", textSchema);

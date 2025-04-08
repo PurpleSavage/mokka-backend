@@ -1,38 +1,50 @@
 import { TextProofreaderDto } from "../../domain/dtos/user/text-proofreader.dto"
-import OpenAI from "openai";
-import { envs } from "../../config/envs";
-import { GoogleGenAI } from "@google/genai";
+import { clientOpenIA,clientAnthropicIa,clientGoogleIa } from "../../config/clientia";
+import { ModelIa } from "../../domain/dtos/user/text-proofreader.dto";
 
 
-
-
+export interface ResponseTextProofreader {
+    response:string,
+    model: ModelIa,
+    userId:string
+}
 
 export class TextProofreaderClient{
 
-    async getTextProofreader(textProofreaderDto: TextProofreaderDto):Promise<string>{
-        const {model,prompt} = textProofreaderDto
+    async getTextProofreader(textProofreaderDto: TextProofreaderDto):Promise<ResponseTextProofreader>{
+        const {model,prompt,userId} = textProofreaderDto
         let response=""
 
         if(model==="GPT"){
 
-            const client = new OpenAI({apiKey:envs.OPEN_AI_API_KEY});
-            const completionsGPT = await client.responses.create({
+            const completionsGPT = await clientOpenIA.responses.create({
                 model: "gpt-4o",
                 input: prompt
             });
             response = completionsGPT.output_text
 
         } else if(model === "GEMINI"){
-            const ai = new GoogleGenAI({ apiKey:envs.GOOGLE_AI_API_KEY});
-            const completionsGoogle = await ai.models.generateContent({
+            const completionsGoogle = await clientGoogleIa.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: prompt
             });
             response = completionsGoogle.text || ""
 
         }else{
-            //aqui va optro modelo de claude pero aun no obtengo accveso a la apikey 
+            const msg = await clientAnthropicIa.messages.create({
+                model: "claude-3-7-sonnet-20250219",
+                max_tokens: 1024,
+                messages: [{ role: "user", content: "Hello, Claude" }],
+            });
+
+            response = msg.content.map(block =>
+                typeof block === "object" && "text" in block ? block.text : ""
+            ).join(" ");
         }
-        return response
+        return {
+            response,
+            model,
+            userId
+        }
     }
 }
