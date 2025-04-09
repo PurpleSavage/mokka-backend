@@ -25,4 +25,8 @@ export class UserController{
         .then(data=>res.json(data))
         .catch(error=>this.handlerError(error, res))
     }
+
+    audioGeneration=(req:Request,res:Response)=>{
+
+    }
 }

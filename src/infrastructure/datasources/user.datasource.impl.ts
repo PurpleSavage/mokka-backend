@@ -4,7 +4,7 @@ import { UserDataSource } from "../../domain/datasources/user.datasource";
 import { TextProofreaderDto } from "../../domain/dtos/user/text-proofreader.dto";
 import { TextEntity } from "../../domain/entities/text.entity";
 import { CustomError } from "../../domain/errors/custom.error";
-import { UserClient } from "../http-clients/TextProofreaderClient.http-client";
+import { UserClient } from "../http-clients/userClient.http-client";
 
 import { textMapper } from "../mappers/text.mapper";
 

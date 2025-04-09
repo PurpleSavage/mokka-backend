@@ -9,6 +9,7 @@ export interface ResponseTextProofreader {
     userId:string
 }
 
+
 export class UserClient{
 
     async getTextProofreader(textProofreaderDto: TextProofreaderDto):Promise<ResponseTextProofreader>{
