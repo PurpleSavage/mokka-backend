@@ -4,8 +4,8 @@ import { UserDatasourceImpl } from "../../infrastructure/datasources/user.dataso
 import { UserClient } from "../../infrastructure/http-clients/userClient.http-client";
 import { UserController } from "./controller";
 import { UserRepositoryImpl } from "../../infrastructure/repositories/user.repository.impl";
-
-
+import { AuthMiddleware } from "../middleware/auth.middleware";
+import { RefreshTokenMiddleware } from "../middleware/refreshToken.middleware";
 export class UserRoutes{
     static get routes():Router{
         
@@ -15,7 +15,13 @@ export class UserRoutes{
         const userRepository = new UserRepositoryImpl(datasource)
         const controller = new UserController(userRepository)
 
-        router.post('/text',controller.textProofreader)
+        router.post(
+            '/text',
+            [RefreshTokenMiddleware.ValidateRefreshToke,AuthMiddleware.validateJWT],
+            controller.textProofreader
+        )
+
+        
         return router
     }
 }
