@@ -9,7 +9,7 @@ export interface ResponseTextProofreader {
     userId:string
 }
 
-export class TextProofreaderClient{
+export class UserClient{
 
     async getTextProofreader(textProofreaderDto: TextProofreaderDto):Promise<ResponseTextProofreader>{
         const {model,prompt,userId} = textProofreaderDto

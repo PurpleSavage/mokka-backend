@@ -89,9 +89,13 @@ export class AuthDatasourceImpl implements AuthDataSource{
         try {
             const payload = await this.validateToken<{id:string}>(refresh_token)
             if(!payload) throw  CustomError.badRequest("Missing token")
+            
+            const userExist = await UserModel.findById(payload.id)
 
+            if(userExist?.refreshToken!==refresh_token) throw CustomError.unauthorized('Error generating token');
 
             const new_token = await this.signToken({ id: payload.id }, '2h');
+
             if ( !new_token ) throw CustomError.internalServer('Error generating token');
             return {
                 access_token:new_token

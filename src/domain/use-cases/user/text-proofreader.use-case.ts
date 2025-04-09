@@ -19,7 +19,7 @@ export class TextProofreader implements TextProofreaderUseCase{
             content:responseModel.content,
             id:responseModel.id,
             userId:responseModel.userId,
-            modelName:responseModel.modelName
+            model:responseModel.model
         }
     }
 }
