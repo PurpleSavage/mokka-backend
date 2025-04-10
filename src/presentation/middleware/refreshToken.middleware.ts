@@ -7,9 +7,9 @@ export class RefreshTokenMiddleware{
         const refreshToken=req.cookies.refresh_token
         try {
             const payload =await JWT.validateToken<{email:string}>(refreshToken )
-            if(!payload) return res.status(403).json({error:'Invalid session', redirectTo: '/auth',refresh:true})
+            if(!payload) return res.status(403).json({error:'Invalid session', redirectTo: '/auth'})
             const user = await UserModel.findOne({email:payload.email})
-            if(user?.email !== payload.email) return res.status(403).json({error:'Invalid session', redirectTo: '/auth',refresh:true})
+            if(user?.email !== payload.email) return res.status(403).json({error:'Invalid session', redirectTo: '/auth'})
             next()
         } catch (error) {
             console.log(error)

@@ -17,7 +17,7 @@ export class UserRoutes{
 
         router.post(
             '/text',
-            [RefreshTokenMiddleware.ValidateRefreshToke,AuthMiddleware.validateJWT],
+            [AuthMiddleware.validateJWT],
             controller.textProofreader
         )
 
