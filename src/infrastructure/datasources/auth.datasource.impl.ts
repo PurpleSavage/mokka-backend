@@ -29,10 +29,10 @@ export class AuthDatasourceImpl implements AuthDataSource{
         const {email,password,typePlan,}=registerUserDto
 
         try {
-            const emailExist = await UserModel.findOne({email:email})
+            const userExist = await UserModel.findOne({email:email})
 
             
-            if(emailExist) throw CustomError.badRequest('Could not create user , exists')
+            if(userExist) throw CustomError.badRequest('Could not create user , exists')
             
             const refresh_token = await this.signToken({ email:email}, '168h') 
 
@@ -85,16 +85,10 @@ export class AuthDatasourceImpl implements AuthDataSource{
     }
     
     async getAccessToken(getAccessTokenDto:GetAccessTokenDto): Promise<AccessTokenEntity> {
-        const {refresh_token}=getAccessTokenDto
+        const {id}=getAccessTokenDto
         try {
-            const payload = await this.validateToken<{id:string}>(refresh_token)
-            if(!payload) throw  CustomError.badRequest("Missing token")
             
-            const userExist = await UserModel.findById(payload.id)
-
-            if(userExist?.refreshToken!==refresh_token) throw CustomError.unauthorized('Error generating token');
-
-            const new_token = await this.signToken({ id: payload.id }, '2h');
+            const new_token = await this.signToken({ id: id}, '2h');
 
             if ( !new_token ) throw CustomError.internalServer('Error generating token');
             return {

@@ -11,7 +11,7 @@ export class AuthMiddleware{
         try {
             const payload =await JWT.validateToken<{id:string}>(token )
             if(!payload) return res.status(403).json({error:'Invalid token'})
-
+ 
             const user =UserModel.findById(payload.id)
             if(!user) return res.status(400).json({error:'Invalid token '})
             req.body.user= user

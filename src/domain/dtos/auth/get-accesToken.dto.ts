@@ -1,16 +1,17 @@
 
 export class GetAccessTokenDto{
     constructor(
-        public refresh_token:string,
 
+      public id:string
     ){}
     static create( object: { [ key: string ]: any; } ): [ string?, GetAccessTokenDto?]{
-      const { refresh_token,access_token } = object;
-      if ( !refresh_token ) return [ 'Missing aaccess-token' ];
-      if ( !access_token ) return [ 'Missing aaccess-token' ];
+      const { id } = object;
+      console.log(id)
+
+      if ( !id ) return [ 'Missing id' ];
       return [
         undefined,
-        new GetAccessTokenDto(refresh_token)
+        new GetAccessTokenDto(id)
       ];
     }
 }
