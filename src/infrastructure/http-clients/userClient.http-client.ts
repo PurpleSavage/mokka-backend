@@ -6,6 +6,7 @@ import { ResponseAudio } from "../responseclientinterface/audioResponse.interfac
 import { supabase } from "../../config/supabaseclient";
 import { generateId } from "../../utils/generateId";
 
+
 export class UserClient{
 
     async getTextProofreader(textProofreaderDto: TextProofreaderDto):Promise<ResponseTextProofreader>{
@@ -52,23 +53,28 @@ export class UserClient{
             model_id: "eleven_multilingual_v2",
             output_format: "mp3_44100_128",
         })
+        //console.log(audio)
+        const filename =`${userId}-${generateId()}`
         const {error} = await supabase.storage
         .from('mokkaaudios')
-        .upload(`${userId}-${generateId()}`,audio,{
+        .upload(filename,audio,{
             contentType: 'audio/mpeg',
             cacheControl: '3600',
             upsert: true // Si quieres reemplazar el archivo si ya existe
         })
+       
         if (error) {
+            console.log(error)
             throw new Error(error.message);  // Lanza el error si ocurre un fallo
         }
-        const { data: publicUrlData } = supabase.storage
+        const {data } = supabase.storage
         .from('mokkaaudios')
-        .getPublicUrl(`${userId}-${generateId()}`);
+        .getPublicUrl(filename);
+        console.log(data.publicUrl)
         return {
             content:prompt,
             userId,
-            url:publicUrlData.publicUrl  
+            url:data.publicUrl 
         }
     } 
 }

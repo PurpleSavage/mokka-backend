@@ -30,7 +30,7 @@ export class AuthController{
         .then((data)=>{
             const{token,user}= data
             const {refreshToken,...dataUser} = user
-            res.cookie("refresh_token",refreshToken)
+            res.cookie("refreshToken",refreshToken)
             res.json({token,dataUser})
         })
         .catch(error=>this.handlerError(error, res))
@@ -45,7 +45,7 @@ export class AuthController{
         .then( data => {
             const{token,user}= data
             const {refreshToken,...dataUser} = user
-            res.cookie("refresh_token",refreshToken)
+            res.cookie("refreshToken",refreshToken)
             res.json({token,dataUser})
         } )
         .catch( error => this.handlerError(error, res) );

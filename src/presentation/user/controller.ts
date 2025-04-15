@@ -32,7 +32,7 @@ export class UserController{
         const [error,audioGenerationDto]=AudiogenerationDto.create(req.body)
         if(error){
             return res.status(400).json({error})
-        }
+        } 
         new AudioGeneration(this.userRepository)
         .execute(audioGenerationDto!)
         .then(data=>res.json(data))

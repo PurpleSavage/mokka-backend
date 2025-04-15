@@ -16,11 +16,16 @@ export class UserRoutes{
         const controller = new UserController(userRepository)
 
         router.post(
-            '/text',
+            '/textProofreader',
             [AuthMiddleware.validateJWT],
             controller.textProofreader
         )
 
+        router.post(
+            '/audioGeneration',
+            [AuthMiddleware.validateJWT],
+            controller.audioGeneration
+        )
         
         return router
     }
