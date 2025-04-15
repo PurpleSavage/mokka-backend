@@ -3,6 +3,8 @@ import { CustomError } from "../../domain/errors/custom.error"
 import { Request, Response } from "express"
 import { TextProofreader } from "../../domain/use-cases/user/text-proofreader.use-case"
 import { UserRepository } from "../../domain/repositories/user.repository"
+import { AudiogenerationDto } from "../../domain/dtos/user/audio-generation.dto"
+import { AudioGeneration } from "../../domain/use-cases/user/audio-generation.use-case"
 
 export class UserController{
     constructor(
@@ -27,6 +29,13 @@ export class UserController{
     }
 
     audioGeneration=(req:Request,res:Response)=>{
-
+        const [error,audioGenerationDto]=AudiogenerationDto.create(req.body)
+        if(error){
+            return res.status(400).json({error})
+        }
+        new AudioGeneration(this.userRepository)
+        .execute(audioGenerationDto!)
+        .then(data=>res.json(data))
+        .catch(error=>this.handlerError(error, res))
     }
 }

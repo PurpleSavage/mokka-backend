@@ -1,14 +1,10 @@
 import { TextProofreaderDto } from "../../domain/dtos/user/text-proofreader.dto"
-import { clientOpenIA,clientAnthropicIa,clientGoogleIa } from "../../config/clientia";
-import { ModelIa } from "../../domain/dtos/user/text-proofreader.dto";
-
-
-export interface ResponseTextProofreader {
-    response:string,
-    model: ModelIa,
-    userId:string
-}
-
+import { clientOpenIA,clientAnthropicIa,clientGoogleIa,clientElevenLabs } from "../../config/clientia";
+import { AudiogenerationDto } from "../../domain/dtos/user/audio-generation.dto";
+import { ResponseTextProofreader } from "../responseclientinterface/textproofreaderResponse.interface";
+import { ResponseAudio } from "../responseclientinterface/audioResponse.interface";
+import { supabase } from "../../config/supabaseclient";
+import { generateId } from "../../utils/generateId";
 
 export class UserClient{
 
@@ -48,4 +44,31 @@ export class UserClient{
             userId
         }
     }
+
+    async audioGeneration(audioGenerationDto:AudiogenerationDto): Promise<ResponseAudio> {
+        const {prompt,userId} = audioGenerationDto
+        const audio = await clientElevenLabs.textToSpeech.convert("JBFqnCBsd6RMkjVDRZzb",{
+            text: prompt,
+            model_id: "eleven_multilingual_v2",
+            output_format: "mp3_44100_128",
+        })
+        const {error} = await supabase.storage
+        .from('mokkaaudios')
+        .upload(`${userId}-${generateId()}`,audio,{
+            contentType: 'audio/mpeg',
+            cacheControl: '3600',
+            upsert: true // Si quieres reemplazar el archivo si ya existe
+        })
+        if (error) {
+            throw new Error(error.message);  // Lanza el error si ocurre un fallo
+        }
+        const { data: publicUrlData } = supabase.storage
+        .from('mokkaaudios')
+        .getPublicUrl(`${userId}-${generateId()}`);
+        return {
+            content:prompt,
+            userId,
+            url:publicUrlData.publicUrl  
+        }
+    } 
 }
