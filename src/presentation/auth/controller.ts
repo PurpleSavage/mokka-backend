@@ -30,7 +30,14 @@ export class AuthController{
         .then((data)=>{
             const{token,user}= data
             const {refreshToken,...dataUser} = user
-            res.cookie("refreshToken",refreshToken)
+            res.cookie("refreshToken",refreshToken,
+                {
+                    httpOnly: true,
+                    secure: true,         // solo en HTTPS, puedes poner false si estás en localhost
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días en milisegundos
+                    sameSite: 'strict',   // o 'lax' según tu necesidad
+                }
+            )
             res.json({token,dataUser})
         })
         .catch(error=>this.handlerError(error, res))
@@ -45,7 +52,14 @@ export class AuthController{
         .then( data => {
             const{token,user}= data
             const {refreshToken,...dataUser} = user
-            res.cookie("refreshToken",refreshToken)
+            res.cookie("refreshToken",refreshToken,
+                {
+                    httpOnly: true,
+                    secure: true,         // solo en HTTPS, puedes poner false si estás en localhost
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días en milisegundos
+                    sameSite: 'strict',   // o 'lax' según tu necesidad
+                }
+            )
             res.json({token,dataUser})
         } )
         .catch( error => this.handlerError(error, res) );

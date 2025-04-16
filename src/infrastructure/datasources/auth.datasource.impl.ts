@@ -14,7 +14,7 @@ import { AccessTokenEntity } from "../../domain/entities/accessToken.entity";
 type HashFunction =(password: string)=>string
 type CompareFunction=(password: string, hashed: string)=>boolean
 type SignToken = (payload: Object, duration?: string) => Promise<string | null>;
-type ValidateToken=<T>(token: string)=> Promise<T | null>
+
 
 export class AuthDatasourceImpl implements AuthDataSource{
 
@@ -22,7 +22,6 @@ export class AuthDatasourceImpl implements AuthDataSource{
         private readonly hashPassword:HashFunction=BcryptAdapter.hash,
         private readonly comparePassword:CompareFunction=BcryptAdapter.compare,
         private readonly signToken: SignToken = JWT.generateToken,
-        private readonly validateToken:ValidateToken= JWT.validateToken
     ){}
 
     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
