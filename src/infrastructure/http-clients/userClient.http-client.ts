@@ -72,14 +72,15 @@ export class UserClient{
             console.log("error supbase: ",error)
             throw new Error(error.message);  // Lanza el error si ocurre un fallo
         }
-        const {data } = supabase.storage
+        const {data } = await supabase.storage
         .from('mokkaaudios')
-        .getPublicUrl(filename);
-
+        .createSignedUrl(filename,2*60*60*60*60)
+        //.getPublicUrl(filename);
+        if(!data) throw new Error('Mokka cant create a public url')
         return {
             content:prompt,
             userId,
-            url:data.publicUrl 
+            url:data?.signedUrl
         }
     } 
 }
