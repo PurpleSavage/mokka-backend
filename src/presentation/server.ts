@@ -17,7 +17,8 @@ const corsOptions:CorsOptions={
             // no esta permitido
             callback(new  Error("Error de Cors"))
         }
-    }
+    },
+    credentials: true
     
 }
 
@@ -35,7 +36,7 @@ export class Server{
 
 
     async start(){
-        //this.app.use(cors(corsOptions))
+        this.app.use(cors(corsOptions))
         this.app.use(express.json())
         this.app.use(cookieParser());
         this.app.use( express.urlencoded({ extended: true }) ); 
