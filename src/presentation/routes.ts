@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthRoutes } from "./auth/routes";
 import { UserRoutes } from "./user/routes";
+import { MediaCreatorRoutes } from "./mediacreator/routes";
 export class AppRoutes{
 
     static get routes():Router{
@@ -8,7 +9,7 @@ export class AppRoutes{
 
         router.use('/api/auth',AuthRoutes.routes)
         router.use('/api/user',UserRoutes.routes)
-        //router.use('/api/user')
+        router.use('/api/mediacreator',MediaCreatorRoutes.routes)
         
         return router
     }

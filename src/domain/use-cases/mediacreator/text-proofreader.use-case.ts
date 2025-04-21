@@ -1,7 +1,7 @@
-import { TextProofreaderDto } from "../../dtos/user/text-proofreader.dto"
+import { TextProofreaderDto } from "../../dtos/mediacreator/text-proofreader.dto"
 import { TextEntity } from "../../entities/text.entity"
+import { MediaCreatorRepository } from "../../repositories/mediacreator.repository"
 
-import { UserRepository } from "../../repositories/user.repository"
 
 
 interface TextProofreaderUseCase{
@@ -11,10 +11,10 @@ interface TextProofreaderUseCase{
 
 export class TextProofreader implements TextProofreaderUseCase{
     constructor(
-        private readonly userRepository:UserRepository
+        private readonly mediacreatorRepository:MediaCreatorRepository
     ){}
     async execute(textProofreaderDto: TextProofreaderDto): Promise<TextEntity> {
-        const responseModel = await this.userRepository.textProofreader(textProofreaderDto)
+        const responseModel = await this.mediacreatorRepository.textProofreader(textProofreaderDto)
         return {
             content:responseModel.content,
             id:responseModel.id,

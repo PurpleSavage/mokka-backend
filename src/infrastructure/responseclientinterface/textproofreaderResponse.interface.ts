@@ -1,4 +1,4 @@
-import { ModelIa } from "../../domain/dtos/user/text-proofreader.dto";
+import { ModelIa } from "../../domain/dtos/mediacreator/text-proofreader.dto";
 
 export interface ResponseTextProofreader {
     response:string,

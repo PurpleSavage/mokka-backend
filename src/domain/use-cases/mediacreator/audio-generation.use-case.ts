@@ -1,6 +1,7 @@
-import { AudiogenerationDto } from "../../dtos/user/audio-generation.dto";
+import { AudiogenerationDto } from "../../dtos/mediacreator/audio-generation.dto";
 import { AudioEntity } from "../../entities/audio.entity";
-import { UserRepository } from "../../repositories/user.repository";
+import { MediaCreatorRepository } from "../../repositories/mediacreator.repository";
+
 
 interface AudioGenerationUseCase{
     execute(audiogenerationDto:AudiogenerationDto):Promise<AudioEntity>
@@ -8,10 +9,10 @@ interface AudioGenerationUseCase{
 
 export class AudioGeneration implements AudioGenerationUseCase{
     constructor(
-        private readonly userRepository:UserRepository
+        private readonly mediacreatorRepository:MediaCreatorRepository
     ){}
     async execute(audiogenerationDto: AudiogenerationDto): Promise<AudioEntity> {
-        const responseModel = await this.userRepository.audioGeneration(audiogenerationDto)
+        const responseModel = await this.mediacreatorRepository.audioGeneration(audiogenerationDto)
         return {
             content:responseModel.content,
             id:responseModel.id,

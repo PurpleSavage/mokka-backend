@@ -1,13 +1,13 @@
-import { TextProofreaderDto } from "../../domain/dtos/user/text-proofreader.dto"
+import { TextProofreaderDto } from "../../domain/dtos/mediacreator/text-proofreader.dto"
 import { clientOpenIA,clientAnthropicIa,clientGoogleIa,clientElevenLabs } from "../../config/clientia";
-import { AudiogenerationDto } from "../../domain/dtos/user/audio-generation.dto";
+import { AudiogenerationDto } from "../../domain/dtos/mediacreator/audio-generation.dto";
 import { ResponseTextProofreader } from "../responseclientinterface/textproofreaderResponse.interface";
 import { ResponseAudio } from "../responseclientinterface/audioResponse.interface";
 import { supabase } from "../../config/supabaseclient";
 import { generateId } from "../../utils/generateId";
 
 
-export class UserClient{
+export class MediaCreatorClient{
 
     async getTextProofreader(textProofreaderDto: TextProofreaderDto):Promise<ResponseTextProofreader>{
         const {model,prompt,userId} = textProofreaderDto
