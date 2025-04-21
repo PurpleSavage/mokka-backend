@@ -40,7 +40,8 @@ export class MediaCreatorDatasourceImpl implements MediaCreatorDatasource{
                 const audioModel = await AudioModel.create({
                     content:responseModel.content,
                     userId:responseModel.userId,
-                    url:responseModel.url
+                    url:responseModel.url,
+                    modelId:responseModel.modelId
                 })
                 await audioModel.save()
                 return audioMapper.audioEntityFromObject(audioModel)

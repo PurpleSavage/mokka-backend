@@ -3,6 +3,7 @@ export class AudioEntity{
         public id :string,
         public content:string,
         public userId: string,
-        public url:string
+        public url:string,
+        public modelId:string
     ){}
 }

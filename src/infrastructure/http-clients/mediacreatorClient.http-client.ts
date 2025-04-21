@@ -47,8 +47,8 @@ export class MediaCreatorClient{
     }
 
     async audioGeneration(audioGenerationDto:AudiogenerationDto): Promise<ResponseAudio> {
-        const {prompt,userId} = audioGenerationDto
-        const audio = await clientElevenLabs.textToSpeech.convert("JBFqnCBsd6RMkjVDRZzb",{
+        const {prompt,userId,modelId} = audioGenerationDto
+        const audio = await clientElevenLabs.textToSpeech.convert(modelId,{
             text: prompt,
             model_id: "eleven_multilingual_v2",
             output_format: "mp3_44100_128",
@@ -75,12 +75,12 @@ export class MediaCreatorClient{
         const {data } = await supabase.storage
         .from('mokkaaudios')
         .createSignedUrl(filename,2*60*60*60*60)
-        //.getPublicUrl(filename);
         if(!data) throw new Error('Mokka cant create a public url')
         return {
             content:prompt,
             userId,
-            url:data?.signedUrl
+            url:data?.signedUrl,
+            modelId
         }
     } 
 }
