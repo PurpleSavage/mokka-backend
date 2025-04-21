@@ -13,6 +13,9 @@ import { UserClient } from "../http-clients/userClient.http-client";
 import { textMapper } from "../mappers/text.mapper";
 import { audioMapper } from "../mappers/audio.mapper";
 import { AudioEntity } from "../../domain/entities/audio.entity";
+import { GetProfileDto } from "../../domain/dtos/user/get-profile.dto";
+import { UserModel } from "../../data/mongodb/models/user.model";
+import { UserMapper } from "../mappers/user.mapper";
 
 export class UserDatasourceImpl implements UserDataSource{
     constructor(
@@ -49,6 +52,22 @@ export class UserDatasourceImpl implements UserDataSource{
             })
             await audioModel.save()
             return audioMapper.audioEntityFromObject(audioModel)
+        } catch (error) {
+            if(error instanceof CustomError){
+                throw error;
+            }
+            throw CustomError.internalServer()
+        }
+    }
+    async getProfile(getProfileDto: GetProfileDto): Promise<UserEntity> {
+        const {id}=getProfileDto
+        try {
+            const user = await UserModel.findById(id)
+
+            if (!user) {
+                throw CustomError.notFound('User not found');
+            }
+            return UserMapper.userEntityFromObject(user);
         } catch (error) {
             if(error instanceof CustomError){
                 throw error;

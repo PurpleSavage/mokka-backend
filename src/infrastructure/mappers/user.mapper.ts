@@ -4,7 +4,6 @@ import { UserEntity } from "../../domain/entities/user.entity"
 export class UserMapper {
     static userEntityFromObject (object:{[key:string]:any}){
         const {id,_id,email,password,credits,typePlan,subscriptionExpiresAt, refreshToken} =object
-
         if(!_id || !id) throw CustomError.badRequest(' Missing id')
         
 

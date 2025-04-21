@@ -25,56 +25,31 @@ export class AuthDatasourceImpl implements AuthDataSource{
     ){}
 
     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
-        const {email,password,typePlan,}=registerUserDto
-
+        const { email, password, typePlan } = registerUserDto;
+    
         try {
-            const userExist = await UserModel.findOne({email:email})
-
-            
-            if(userExist) throw CustomError.badRequest('Could not create user , exists')
-            
-            const refresh_token = await this.signToken({ email:email}, '168h') 
-
-            if(!refresh_token) throw CustomError.badRequest('Could not create user')
-
-            const user =await UserModel.create({
+            const userExist = await UserModel.findOne({ email });
+    
+            if (userExist) throw CustomError.badRequest('Could not create user, already exists');
+    
+            // Crear usuario sin token aún
+            const user = await UserModel.create({
                 email,
-                password:this.hashPassword(password),
-                credits:typePlan === "FREE" ? 100:null ,
+                password: this.hashPassword(password),
+                credits: typePlan === "FREE" ? 100 : null,
                 typePlan: typePlan,
-                subscriptionExpiresAt: typePlan === "PRO" ? calculateExpirationDate(new Date(),30): null,
-                refreshToken: refresh_token  
-            })
-
-            await user.save()
-
-            return UserMapper.userEntityFromObject(user)
-        } catch (error) {
-            if(error instanceof CustomError){
-                throw error;
-            }
-            throw CustomError.internalServer()
-        }
-    }
-    async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
-        const { email, password } = loginUserDto;
+                subscriptionExpiresAt: typePlan === "PRO" ? calculateExpirationDate(new Date(), 30) : null,
+            });
     
-        try {
-            
-            const user = await UserModel.findOneAndUpdate(
-                { email }, // Buscar por email
-                { $set: { refreshToken: await this.signToken({ email }, '168h') } }, 
-                { new: true } 
-            );
+            // Firmar token usando el ID de Mongo
+            const refresh_token = await this.signToken({ id: user._id.toString() }, '168h'); 
     
-            if (!user) throw CustomError.badRequest('User does not exist - email');
+            if (!refresh_token) throw CustomError.badRequest('Could not create refresh token');
     
-           
-            const isMatching = this.comparePassword(password, user.password);
-            if (!isMatching) throw CustomError.badRequest('Password is not valid');
+            user.refreshToken = refresh_token;
+            await user.save();
     
             return UserMapper.userEntityFromObject(user);
-    
         } catch (error) {
             if (error instanceof CustomError) {
                 throw error;
@@ -82,6 +57,33 @@ export class AuthDatasourceImpl implements AuthDataSource{
             throw CustomError.internalServer();
         }
     }
+    async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+        const { email, password } = loginUserDto;
+    
+        try {
+
+            const user = await UserModel.findOne({ email });
+    
+            if (!user) throw CustomError.badRequest('User does not exist - email');
+
+            const isMatching = this.comparePassword(password, user.password);
+            if (!isMatching) throw CustomError.badRequest('Password is not valid');
+
+            const refresh_token = await this.signToken({ id: user._id.toString() }, '168h');
+            if (!refresh_token) throw CustomError.badRequest('Could not create refresh token');
+
+            user.refreshToken = refresh_token;
+            await user.save();
+
+            return UserMapper.userEntityFromObject(user);
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw error;
+            }
+            throw CustomError.internalServer();
+        }
+    }
+    
     
     async getAccessToken(getAccessTokenDto:GetAccessTokenDto): Promise<AccessTokenEntity> {
         const {id}=getAccessTokenDto

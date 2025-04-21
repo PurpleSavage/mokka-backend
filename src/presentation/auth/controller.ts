@@ -38,7 +38,7 @@ export class AuthController{
                     sameSite: 'strict',   // o 'lax' según tu necesidad
                 }
             )
-            res.json({token,dataUser})
+            res.json({token,user:dataUser})
         })
         .catch(error=>this.handlerError(error, res))
         
@@ -60,7 +60,7 @@ export class AuthController{
                     sameSite: 'strict',   // o 'lax' según tu necesidad
                 }
             )
-            res.json({token,dataUser})
+            res.json({token,user:dataUser})
         } )
         .catch( error => this.handlerError(error, res) );
         

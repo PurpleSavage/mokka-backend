@@ -26,7 +26,11 @@ export class UserRoutes{
             [AuthMiddleware.validateJWT],
             controller.audioGeneration
         )
-        
+        router.get(
+            '/getProfile',
+            [RefreshTokenMiddleware.ValidateRefreshToke],
+            controller.getProfile
+        )
         return router
     }
 }

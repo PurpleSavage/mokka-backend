@@ -8,19 +8,24 @@ interface Options{
 }
 const whitelist =[process.env.URL_FRONTEND] 
 
-const corsOptions:CorsOptions={
-    origin:function(origin,callback){
-        if(origin!==undefined && whitelist.includes(origin)){
-            // puedede consultar la api
-            callback(null,true)
-        }else{
-            // no esta permitido
-            callback(new  Error("Error de Cors"))
-        }
-    },
-    credentials: true
+const corsOptions: CorsOptions = {
+    origin: true, // esto le dice a Express que refleje el origen del request
+    credentials: true // permite el uso de cookies, Authorization headers, etc.
+  };
+
+// const corsOptions:CorsOptions={
+//     origin:function(origin,callback){
+//         if(origin!==undefined && whitelist.includes(origin)){
+//             // puedede consultar la api
+//             callback(null,true)
+//         }else{
+//             // no esta permitido
+//             callback(new  Error("Error de Cors"))
+//         }
+//     },
+//     credentials: true
     
-}
+// }
 
 export class Server{
     public readonly app = express()

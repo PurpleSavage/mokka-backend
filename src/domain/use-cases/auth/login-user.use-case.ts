@@ -42,7 +42,7 @@ interface UserToken{
               subscriptionExpiresAt:user.subscriptionExpiresAt,
               refreshToken: user.refresh_token
           }
-      }
+        }
     
     }
   }
