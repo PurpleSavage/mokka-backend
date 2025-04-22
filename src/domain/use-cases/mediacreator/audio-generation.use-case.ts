@@ -17,7 +17,8 @@ export class AudioGeneration implements AudioGenerationUseCase{
             content:responseModel.content,
             id:responseModel.id,
             userId:responseModel.userId,
-            url:responseModel.url
+            url:responseModel.url,
+            modelId:responseModel.modelId
         }
     }
 }

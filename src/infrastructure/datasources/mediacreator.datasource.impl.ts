@@ -1,6 +1,7 @@
 import { AudioModel } from "../../data/mongodb/models/audio.model";
 import { TextModel } from "../../data/mongodb/models/text.model";
 import { MediaCreatorDatasource } from "../../domain/datasources/mediacrator.datasource";
+import { GetAllAudiosDto } from "../../domain/dtos/mediacreator/all-audios.dto";
 import { AudiogenerationDto } from "../../domain/dtos/mediacreator/audio-generation.dto";
 import { TextProofreaderDto } from "../../domain/dtos/mediacreator/text-proofreader.dto";
 import { AudioEntity } from "../../domain/entities/audio.entity";
@@ -51,5 +52,18 @@ export class MediaCreatorDatasourceImpl implements MediaCreatorDatasource{
                 }
                 throw CustomError.internalServer()
             }
+    }
+    async getAllAudios(getAllAudioDto: GetAllAudiosDto): Promise<AudioEntity[]> {
+        const {userId}=getAllAudioDto
+        try {
+            const allAudios = await AudioModel.find({userId})
+            const audiosFormated = allAudios.map(audio =>audioMapper.audioEntityFromObject(audio))
+            return audiosFormated
+        } catch (error) {
+            if(error instanceof CustomError){
+                throw error;
+            }
+            throw CustomError.internalServer()
+        }
     }
 }

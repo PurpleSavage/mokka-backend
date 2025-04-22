@@ -23,6 +23,12 @@ export class MediaCreatorRoutes{
             [AuthMiddleware.validateJWT],
             controller.audioGeneration
         )
+
+        router.post(
+            '/getAllAudios',
+            [AuthMiddleware.validateJWT],
+            controller.getAduios
+        )
         return router
     }
 }

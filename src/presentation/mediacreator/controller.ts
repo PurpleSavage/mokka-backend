@@ -5,6 +5,8 @@ import { AudioGeneration } from "../../domain/use-cases/mediacreator/audio-gener
 import { AudiogenerationDto } from "../../domain/dtos/mediacreator/audio-generation.dto";
 import { TextProofreader } from "../../domain/use-cases/mediacreator/text-proofreader.use-case";
 import { TextProofreaderDto } from "../../domain/dtos/mediacreator/text-proofreader.dto";
+import { GetAllAudiosDto } from "../../domain/dtos/mediacreator/all-audios.dto";
+import { GetAudios } from "../../domain/use-cases/mediacreator/get-audios.use-case";
 
 
 
@@ -36,6 +38,16 @@ export class MediaCreatorController{
             } 
         new AudioGeneration(this.mediacreatorRepository)
         .execute(audioGenerationDto!)
+        .then(data=>res.json(data))
+        .catch(error=>this.handlerError(error, res))
+    }
+    getAduios=(req:Request,res:Response)=>{
+        const [error,getAllAduiosDto]=GetAllAudiosDto.create(req.params)
+        if(error){
+            return res.status(400).json({error})
+        }
+        new GetAudios(this.mediacreatorRepository)
+        .execute(getAllAduiosDto!)
         .then(data=>res.json(data))
         .catch(error=>this.handlerError(error, res))
     }
