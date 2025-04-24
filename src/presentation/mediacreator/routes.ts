@@ -24,8 +24,8 @@ export class MediaCreatorRoutes{
             controller.audioGeneration
         )
 
-        router.post(
-            '/getAllAudios',
+        router.get(
+            '/getAllAudios/:userId',
             [AuthMiddleware.validateJWT],
             controller.getAduios
         )

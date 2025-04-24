@@ -13,7 +13,7 @@ export class AuthMiddleware{
             if(!payload) return res.status(403).json({error:'Invalid token'})
  
             const user =UserModel.findById(payload.id)
-            if(!user) return res.status(400).json({error:'Invalid token '})
+            if(!user) return res.status(400).json({error:'Invalid session '})
             req.body.user= user
             next()
         } catch (error) {
