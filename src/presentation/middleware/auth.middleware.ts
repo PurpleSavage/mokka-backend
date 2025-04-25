@@ -10,7 +10,7 @@ export class AuthMiddleware{
         const token = authrization.split(' ').at(1) || ''
         try {
             const payload =await JWT.validateToken<{id:string}>(token )
-            if(!payload) return res.status(403).json({error:'Invalid token'})
+            if(!payload) return res.status(403).json({error:'Invalid token',renovate:true})
  
             const user =UserModel.findById(payload.id)
             if(!user) return res.status(400).json({error:'Invalid session '})
