@@ -42,7 +42,7 @@ export class AuthDatasourceImpl implements AuthDataSource{
             });
     
             // Firmar token usando el ID de Mongo
-            const refresh_token = await this.signToken({ id: user._id.toString() }, '168h'); 
+            const refresh_token = await this.signToken({ id: user._id.toString() }, '48h'); 
     
             if (!refresh_token) throw CustomError.badRequest('Could not create refresh token');
     
@@ -69,7 +69,7 @@ export class AuthDatasourceImpl implements AuthDataSource{
             const isMatching = this.comparePassword(password, user.password);
             if (!isMatching) throw CustomError.badRequest('Password is not valid');
 
-            const refresh_token = await this.signToken({ id: user._id.toString() }, '168h');
+            const refresh_token = await this.signToken({ id: user._id.toString() }, '48h');
             if (!refresh_token) throw CustomError.badRequest('Could not create refresh token');
 
             user.refreshToken = refresh_token;
@@ -89,7 +89,7 @@ export class AuthDatasourceImpl implements AuthDataSource{
         const {id}=getAccessTokenDto
         try {
             
-            const new_token = await this.signToken({ id: id}, '2h');
+            const new_token = await this.signToken({ id: id}, '5m');
 
             if ( !new_token ) throw CustomError.internalServer('Error generating token');
             return {
