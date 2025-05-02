@@ -6,7 +6,7 @@ export class GetAccessTokenDto{
     ){}
     static create( object: { [ key: string ]: any; } ): [ string?, GetAccessTokenDto?]{
       const { id } = object;
-      console.log(id)
+
 
       if ( !id ) return [ 'Missing id' ];
       return [

@@ -89,7 +89,7 @@ export class AuthDatasourceImpl implements AuthDataSource{
         const {id}=getAccessTokenDto
         try {
             
-            const new_token = await this.signToken({ id: id}, '2h');
+            const new_token = await this.signToken({ id: id}, '1m');
 
             if ( !new_token ) throw CustomError.internalServer('Error generating token');
             return {

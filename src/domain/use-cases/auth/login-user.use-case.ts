@@ -29,7 +29,7 @@ interface UserToken{
       ){}
     async execute(loginUserDto:LoginUserDto): Promise<UserToken> {
         const user = await this.authResository.login(loginUserDto);
-        const token = await this.signToken({ id: user.id }, '2h');
+        const token = await this.signToken({ id: user.id }, '1m');
         if ( !token ) throw CustomError.internalServer('Error generating token');
 
         return {
