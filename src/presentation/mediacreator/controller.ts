@@ -33,6 +33,7 @@ export class MediaCreatorController{
     
     audioGeneration=(req:Request,res:Response)=>{
         const [error,audioGenerationDto]=AudiogenerationDto.create(req.body)
+        
             if(error){
                 return res.status(400).json({error})
             } 

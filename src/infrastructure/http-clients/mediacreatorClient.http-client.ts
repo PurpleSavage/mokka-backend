@@ -61,9 +61,10 @@ export class MediaCreatorClient{
         const audioBuffer = Buffer.concat(chunks);
 
         const filename =`${userId}-${generateId()}`
+        const filePath = `audios-generated/${filename}`;
         const {error} = await supabase.storage
-        .from('mokkaaudios/audios-generated')
-        .upload(filename,audioBuffer,{
+        .from('mokkaaudios')
+        .upload(filePath,audioBuffer,{
             contentType: 'audio/mpeg',
             cacheControl: '3600',
             upsert: true // Si quieres reemplazar el archivo si ya existe
@@ -75,12 +76,12 @@ export class MediaCreatorClient{
         }
         const {data } = await supabase.storage
         .from('mokkaaudios')
-        .createSignedUrl(filename,2*60*60*60*60)
+        .getPublicUrl(filePath)
         if(!data) throw new Error('Mokka cant create a public url')
         return {
             content:prompt,
             userId,
-            url:data?.signedUrl,
+            url:data?.publicUrl,
             modelId
         }
     } 
