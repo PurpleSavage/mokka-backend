@@ -31,7 +31,7 @@ export class GetProfile implements GetProfileUseCase{
     ){}
     async execute(getProfileDto:GetProfileDto): Promise<UserToken> {
         const user = await this.userRepository.getProfile(getProfileDto);
-        const token = await this.signToken({ id: user.id }, '2h');
+        const token = await this.signToken({ id: user.id }, '1m');
         if ( !token ) throw CustomError.internalServer('Error generating token');
         return {
             token:token,

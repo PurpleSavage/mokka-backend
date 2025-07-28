@@ -20,7 +20,7 @@ export class GetAccessToken implements GetAccessTokenUseCase {
         const  data = await this.authResository.getAccessToken(getAccessTokenDto)
         if ( !data ) throw CustomError.internalServer('Error generating access-token');
         return {
-            access_token: data.access_token
+            token: data.token
         }
     }
 }

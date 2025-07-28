@@ -67,11 +67,14 @@ export class AuthController{
     }
 
     getAccessToken=(req:Request,res:Response)=>{
+
         const [error,getAccessTokenDto]=GetAccessTokenDto.create({id:req.body.id}) 
         if ( error ) return res.status(400).json({ error });
         new GetAccessToken(this.authRepository)
         .execute(getAccessTokenDto!)
-        .then(data => res.json(data))
+        .then(data => {
+            res.json(data)
+        })
         .catch( error => this.handlerError(error, res) );
     }
 }

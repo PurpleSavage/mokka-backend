@@ -93,7 +93,7 @@ export class AuthDatasourceImpl implements AuthDataSource{
 
             if ( !new_token ) throw CustomError.internalServer('Error generating token');
             return {
-                access_token:new_token
+                token:new_token
             }
         } catch (error) {
             if(error instanceof CustomError){

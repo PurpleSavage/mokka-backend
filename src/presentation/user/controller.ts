@@ -18,7 +18,6 @@ export class UserController{
 
 
     getProfile=(req:Request,res:Response)=>{
-     
         const [error,getProfileDto]=GetProfileDto.create({ id: req.body._id })
 
         if(error){

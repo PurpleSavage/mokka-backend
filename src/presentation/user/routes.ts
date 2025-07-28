@@ -4,7 +4,7 @@ import { UserDatasourceImpl } from "../../infrastructure/datasources/user.dataso
 
 import { UserController } from "./controller";
 import { UserRepositoryImpl } from "../../infrastructure/repositories/user.repository.impl";
-import { AuthMiddleware } from "../middleware/auth.middleware";
+
 import { RefreshTokenMiddleware } from "../middleware/refreshToken.middleware";
 export class UserRoutes{
     static get routes():Router{
